@@ -13,11 +13,12 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/migration")
+@RequestMapping(value = "/api/migration")
 public class MigrationController {
 
     Logger logger = LoggerFactory.getLogger(MigrationController.class);
@@ -28,7 +29,7 @@ public class MigrationController {
     @Autowired
     Job job;
 
-    @RequestMapping(value = "/run")
+    @PostMapping(value = "/run")
     public void run() throws JobExecutionAlreadyRunningException, JobRestartException,
             JobInstanceAlreadyCompleteException, JobParametersInvalidException {
         JobParameters jobParameters = new JobParameters();

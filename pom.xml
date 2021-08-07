@@ -99,7 +99,50 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>
+				<!-- Permet de build le projet Angular avec maven -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>npm-install</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>src/main/migration-dashboard</workingDirectory>
+							<executable>npm</executable>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>ng-build</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>src/main/migration-dashboard</workingDirectory>
+							<executable>ng</executable>
+							<arguments>build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 </project>
