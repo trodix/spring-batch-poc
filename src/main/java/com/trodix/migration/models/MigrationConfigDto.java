@@ -4,7 +4,7 @@ public class MigrationConfigDto {
 
     private String sourceApiEndpoint;
     private String sourceTodoEndpoint;
-    private String destinationEndpoint;
+    private String destinationApiEndpoint;
     private String destinationTodoEndpoint;
     private String destinationAuthEndpoint;
     private String destinationUsername;
@@ -22,12 +22,12 @@ public class MigrationConfigDto {
         this.sourceApiEndpoint = sourceApiEndpoint;
     }
 
-    public String getDestinationEndpoint() {
-        return destinationEndpoint;
+    public String getDestinationApiEndpoint() {
+        return destinationApiEndpoint;
     }
 
-    public void setDestinationEndpoint(String destinationEndpoint) {
-        this.destinationEndpoint = destinationEndpoint;
+    public void setDestinationApiEndpoint(String destinationApiEndpoint) {
+        this.destinationApiEndpoint = destinationApiEndpoint;
     }
 
     public String getDestinationAuthEndpoint() {

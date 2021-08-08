@@ -13,6 +13,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,13 +21,25 @@ import org.springframework.context.annotation.Configuration;
 @EnableBatchProcessing
 public class SpringBatchConfig {
 
-    @Bean
-    public Job postJob(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
-            ItemReader<TodoDto> postItemReader, ItemProcessor<TodoDto, TodoBackendDto> postItemProcessor,
-            ItemWriter<TodoBackendDto> postItemWriter) {
+    @Autowired
+    private JobBuilderFactory jobBuilderFactory;
 
-        Step step = stepBuilderFactory.get("migrate-todo").<TodoDto, TodoBackendDto>chunk(30).reader(postItemReader)
-                .processor(postItemProcessor).writer(postItemWriter).build();
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+
+    @Autowired
+    private ItemReader<TodoDto> todoItemReader;
+
+    @Autowired
+    private ItemProcessor<TodoDto, TodoBackendDto> todoItemProcessor;
+
+    @Autowired
+    private ItemWriter<TodoBackendDto> todoItemWriter;
+
+    @Bean
+    public Job todoJob() {
+        Step step = stepBuilderFactory.get("migrate-todo").<TodoDto, TodoBackendDto>chunk(30).reader(todoItemReader)
+                .processor(todoItemProcessor).writer(todoItemWriter).build();
 
         return jobBuilderFactory.get("todos-migration-job").incrementer(new RunIdIncrementer()).start(step).build();
     }

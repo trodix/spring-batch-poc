@@ -1,6 +1,8 @@
 export interface MigrationConfig {
-  sourceEndpoint: string;
-  destinationEndpoint: string;
+  sourceApiEndpoint: string;
+  sourceTodoEndpoint: string;
+  destinationApiEndpoint: string;
+  destinationTodoEndpoint: string;
   destinationAuthEndpoint: string;
   destinationUsername: string;
   destinationPassword: string;

@@ -1,0 +1,54 @@
+<div class="form-config">
+    <form [formGroup]="configForm" (ngSubmit)="runMigration()">
+      <label for="migrationSourceUrl">Url serveur source: </label>
+      <input
+        id="migrationSourceUrl"
+        type="url"
+        formControlName="migrationSourceUrl"
+      />
+
+      <label for="migrationSourceTodoPath">Chemin resource api source: </label>
+      <input
+        id="migrationSourceTodoPath"
+        type="text"
+        formControlName="migrationSourceTodoPath"
+      />
+
+      <label for="migrationDestinationUrl">Url serveur destination: </label>
+      <input
+        id="migrationDestinationUrl"
+        type="url"
+        formControlName="migrationDestinationUrl"
+      />
+
+      <label for="migrationDestinationTodoPath">Chemin resource api destination: </label>
+      <input
+        id="migrationDestinationTodoPath"
+        type="text"
+        formControlName="migrationDestinationTodoPath"
+      />
+
+      <label for="migrationDestinationAuthEndpoint">Endpoint auth serveur destination: </label>
+      <input
+        id="migrationDestinationAuthEndpoint"
+        type="text"
+        formControlName="migrationDestinationAuthEndpoint"
+      />
+
+      <label for="migrationDestinationUsername">Username serveur destination: </label>
+      <input
+        id="migrationDestinationUsername"
+        type="text"
+        formControlName="migrationDestinationUsername"
+      />
+
+      <label for="migrationDestinationPassword">Password serveur destination: </label>
+      <input
+        id="migrationDestinationPassword"
+        type="password"
+        formControlName="migrationDestinationPassword"
+      />
+
+      <button type="submit">Lancer la Migration</button>
+    </form>
+  </div>

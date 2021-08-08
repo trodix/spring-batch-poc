@@ -1,106 +1,49 @@
-import { InjectableRxStompConfig, RxStompService } from '@stomp/ng2-stompjs';
-import { Observable } from 'rxjs';
-import { SocketResponse } from '../models/SocketResponse';
-import { WebSocketOptions } from '../models/WebSocketOptions';
+import { Injectable } from '@angular/core';
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
 
-/**
- * A WebSocket service allowing subscription to a broker.
- */
-export class WebSocketService {
-  private obsStompConnection: Observable<any> = new Observable<any>();
-  private subscribers: Array<any> = [];
-  private subscriberIndex = 0;
-  private stompConfig: InjectableRxStompConfig = {
-    heartbeatIncoming: 0,
-    heartbeatOutgoing: 20000,
-    reconnectDelay: 10000,
-    debug: (str) => { console.log(str); }
-  };
 
-  constructor(
-    private stompService: RxStompService,
-    private updatedStompConfig: InjectableRxStompConfig,
-    private options: WebSocketOptions
-  ) {
-    // Update StompJs configuration.
-    this.stompConfig = { ...this.stompConfig, ...this.updatedStompConfig };
-    // Initialise a list of possible subscribers.
-    this.createObservableSocket();
-    // Activate subscription to broker.
-    this.connect();
-  }
+@Injectable()
+export class WebsocketService {
 
-  private createObservableSocket = () => {
-    this.obsStompConnection = new Observable(observer => {
-      const subscriberIndex = this.subscriberIndex++;
-      this.addToSubscribers({ index: subscriberIndex, observer });
-      return () => {
-        this.removeFromSubscribers(subscriberIndex);
-      };
-    });
-  }
+  private serverUrl = `http://localhost:8001/ws`;
+  private stompClient;
+  public mapEndpointSubscription: Map<string, any> = new Map();
 
-  private addToSubscribers = (subscriber: any) => {
-    this.subscribers.push(subscriber);
-  }
-
-  private removeFromSubscribers = (index: number) => {
-    for (let i = 0; i < this.subscribers.length; i++) {
-      if (i === index) {
-        this.subscribers.splice(i, 1);
-        break;
+  public async initWebSocket() {
+    return new Promise<void>((resolve) => {
+      if (!this.stompClient) {
+        const ws = new SockJS(this.serverUrl);
+        this.stompClient = Stomp.over(ws);
+        this.stompClient.connect({}, resolve);
+      } else {
+        resolve();
       }
+    })
+  }
+
+  public async subscribe(name: string, fnc: (event) => void) {
+    const subscription = this.stompClient.subscribe(`/${name}`, (event) => {
+      fnc({ ...event, body: JSON.parse(event.body) })
+    });
+    this.mapEndpointSubscription.set(name, subscription);
+  }
+
+  public unsubscribeToWebSocketEvent(name: string) {
+    const subscription = this.mapEndpointSubscription.get(name);
+    if (subscription) {
+      subscription.unsubscribe();
     }
   }
 
-  /**
-   * Connect and activate the client to the broker.
-   */
-  private connect = () => {
-    this.stompService.stompClient.configure(this.stompConfig as any);
-    this.stompService.stompClient.onConnect = this.onSocketConnect;
-    this.stompService.stompClient.onStompError = this.onSocketError as any;
-    this.stompService.stompClient.activate();
+  public send(name: string, body: any) {
+    this.stompClient.send(`app/topic/execution-job/${name}`, {}, JSON.stringify(body));
   }
 
-  /**
-   * On each connect / reconnect, we subscribe all broker clients.
-   */
-  private onSocketConnect = () => {
-    this.stompService.stompClient.subscribe(this.options.brokerEndpoint, this.socketListener);
+  public disconnect() {
+    if (this.stompClient !== null) {
+      this.stompClient.disconnect();
+    }
   }
 
-  private onSocketError = (errorMsg: string) => {
-    console.log('Broker reported error: ' + errorMsg);
-
-    const response: SocketResponse = {
-      type: 'ERROR',
-      message: errorMsg
-    };
-
-    this.subscribers.forEach(subscriber => {
-      subscriber.observer.error(response);
-    });
-  }
-
-  private socketListener = (data: { body: any }) => {
-    this.subscribers.forEach(subscriber => {
-      subscriber.observer.next(this.getMessage(data));
-    });
-  }
-
-  private getMessage = (data: { body: any }) => {
-    const response: SocketResponse = {
-      type: 'SUCCESS',
-      message: JSON.parse(data.body)
-    };
-    return response;
-  }
-
-  /**
-   * Return an observable containing a subscribers list to the broker.
-   */
-  public getObservable = () => {
-    return this.obsStompConnection;
-  }
 }

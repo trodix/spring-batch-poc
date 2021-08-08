@@ -1,4 +1,7 @@
+import { JobExecution } from "src/models/JobExecution";
+
 export interface Job {
-  id: number;
-  outputConsole: string;
+  name: string;
+  jobExecutions: JobExecution[];
+  jobNotifications: string[];
 }

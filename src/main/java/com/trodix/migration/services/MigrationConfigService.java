@@ -45,8 +45,8 @@ public class MigrationConfigService {
     }
 
     public String getBackendApiEndpoint() {
-        if (StringUtils.hasLength(this.getMigrationConfig().getDestinationEndpoint())) {
-            return this.getMigrationConfig().getDestinationEndpoint();
+        if (StringUtils.hasLength(this.getMigrationConfig().getDestinationApiEndpoint())) {
+            return this.getMigrationConfig().getDestinationApiEndpoint();
         }
         return backendApiEndpoint;
     }

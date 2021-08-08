@@ -11,7 +11,7 @@ public class DashboardController {
      * 
      * @return Le fichier d'entrée de l'application Angular
      */
-    @GetMapping(value = { "/" })
+    @GetMapping("/")
     public String index() {
         return "index.html";
     }

@@ -30,5 +30,7 @@
             <AppenderRef ref="FileAppender" level="warn" />
         </Logger>
 
+        <!-- <Logger name="org.springframework" level="trace" /> -->
+
     </Loggers>
 </Configuration>

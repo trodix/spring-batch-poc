@@ -1,17 +1,18 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { RxStompService  } from '@stomp/ng2-stompjs';
+import { BrowserModule } from '@angular/platform-browser';
+import { MigrationJobHistoryComponent } from 'src/app/components/migration-job-history/migration-job-history.component';
+import { WebsocketService } from 'src/services/websocket.service';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { JobExecutionListWebsocketService, JobExecutionProgressWebsocketService } from 'src/services/websocket/progress.websocket.service';
+import { MigrationConfigComponent } from './components/migration-config/migration-config.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MigrationConfigComponent,
+    MigrationJobHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -20,9 +21,7 @@ import { JobExecutionListWebsocketService, JobExecutionProgressWebsocketService 
     ReactiveFormsModule
   ],
   providers: [
-    RxStompService,
-    JobExecutionListWebsocketService,
-    JobExecutionProgressWebsocketService
+    WebsocketService
   ],
   bootstrap: [AppComponent]
 })

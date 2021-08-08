@@ -1,5 +1,5 @@
 export class WebSocketOptions {
-  brokerEndpoint: string = "";
+  brokerEndpoint: string;
 
   constructor(brokerEndpoint: string) {
     this.brokerEndpoint = brokerEndpoint;
