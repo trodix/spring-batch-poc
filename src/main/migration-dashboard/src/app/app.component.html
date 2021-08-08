@@ -1,7 +1,65 @@
-<h1>Application Migration Spring Batch</h1>
-
-<!-- <router-outlet></router-outlet> -->
+<h1>{{ title }}</h1>
 
 <main>
-  <button (click)="runMigration()">Lancer la Migration</button>
+  <div class="form-config">
+    <form [formGroup]="configForm" (ngSubmit)="runMigration()">
+      <label for="migrationSourceUrl">Url serveur source: </label>
+      <input
+        id="migrationSourceUrl"
+        type="url"
+        formControlName="migrationSourceUrl"
+      />
+      <label for="migrationDestinationUrl">Url serveur destination: </label>
+      <input
+        id="migrationDestinationUrl"
+        type="url"
+        formControlName="migrationDestinationUrl"
+      />
+
+      <label for="migrationDestinationAuthEndpoint">Endpoint auth serveur destination: </label>
+      <input
+        id="migrationDestinationAuthEndpoint"
+        type="text"
+        formControlName="migrationDestinationAuthEndpoint"
+      />
+
+      <label for="migrationDestinationUsername">Username serveur destination: </label>
+      <input
+        id="migrationDestinationUsername"
+        type="text"
+        formControlName="migrationDestinationUsername"
+      />
+
+      <label for="migrationDestinationPassword">Password serveur destination: </label>
+      <input
+        id="migrationDestinationPassword"
+        type="password"
+        formControlName="migrationDestinationPassword"
+      />
+
+      <button type="submit">Lancer la Migration</button>
+    </form>
+  </div>
+
+
+  <!-- <div class="job-list">
+    <h2>Liste des derniers jobs terminés</h2>
+    {{ jobList | async }}
+    <p>nombre: {{ jobList.length }}</p>
+    <div *ngIf="jobList.length > 0; else noJobs">
+      <ul *ngFor="let job of jobList">
+        <li>{{ job.id }}</li>
+        <div class="output">
+          {{ job.outputConsole }}
+        </div>
+      </ul>
+    </div>
+  </div> -->
 </main>
+
+<div *ngFor="let item of obsList">
+  {{ (item | async)?.message }}
+</div>
+<p>nombre: {{ obsList.length }}</p>
+
+<ng-template #noJobs>Aucun job terminés recement.</ng-template>

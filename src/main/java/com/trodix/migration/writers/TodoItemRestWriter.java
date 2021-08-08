@@ -7,12 +7,12 @@ import com.trodix.migration.configuration.RestConfig;
 import com.trodix.migration.models.AuthRequest;
 import com.trodix.migration.models.AuthResponse;
 import com.trodix.migration.models.TodoBackendDto;
+import com.trodix.migration.services.MigrationConfigService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,20 +24,8 @@ public class TodoItemRestWriter implements ItemWriter<TodoBackendDto> {
 
     Logger logger = LoggerFactory.getLogger(TodoItemRestWriter.class);
 
-    @Value("${backend.endpoint.api}")
-    private String backendApiEndpoint;
-
-    @Value("${backend.endpoint.auth.login}")
-    private String signinEndpoint;
-
-    @Value("${backend.endpoint.todo}")
-    private String todoEndpoint;
-
-    @Value("${backend.username}")
-    private String username;
-
-    @Value("${backend.password}")
-    private String password;
+    @Autowired
+    private MigrationConfigService migrationConfigService;
 
     @Autowired
     RestConfig restConfig;
@@ -52,7 +40,7 @@ public class TodoItemRestWriter implements ItemWriter<TodoBackendDto> {
         for (TodoBackendDto item : items) {
             HttpEntity<TodoBackendDto> entity = new HttpEntity<>(item, headers);
             final ResponseEntity<TodoBackendDto> response = restTemplate
-                    .postForEntity(backendApiEndpoint + todoEndpoint, entity, TodoBackendDto.class);
+                    .postForEntity(migrationConfigService.getBackendApiEndpoint() + migrationConfigService.getBackendTodoEndpoint(), entity, TodoBackendDto.class);
             if (response.getStatusCode().is2xxSuccessful()) {
                 logger.info("Migration réussie de l'item todo: " + item.getId().toString());
             } else if (response.getStatusCode().isError()) {
@@ -68,10 +56,10 @@ public class TodoItemRestWriter implements ItemWriter<TodoBackendDto> {
 
         final RestTemplate restTemplate = restConfig.getRestTemplate();
         final AuthRequest requestBody = new AuthRequest();
-        requestBody.setUsername(username);
-        requestBody.setPassword(password);
+        requestBody.setUsername(migrationConfigService.getUsername());
+        requestBody.setPassword(migrationConfigService.getPassword());
 
-        final ResponseEntity<AuthResponse> response = restTemplate.postForEntity(backendApiEndpoint + signinEndpoint,
+        final ResponseEntity<AuthResponse> response = restTemplate.postForEntity(migrationConfigService.getBackendApiEndpoint() + migrationConfigService.getSigninEndpoint(),
                 requestBody, AuthResponse.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
