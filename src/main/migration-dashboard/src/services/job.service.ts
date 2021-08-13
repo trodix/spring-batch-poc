@@ -56,11 +56,17 @@ export class JobService {
 
   addJobExecutionOutput(notification: JobExecutionNotification) {
     this.getExecutedJobs().forEach(job => {
-      job.jobExecutions.forEach(jobExecution => {
-        if (jobExecution.jobExecutionId === notification.jobId) {
-          jobExecution.output.push(notification);
-        }
-      })
+      if (job.jobExecutions.length > 0) {
+        job.jobExecutions.forEach(jobExecution => {
+          if (jobExecution.jobExecutionId === notification.jobId) {
+            jobExecution.output.push(notification);
+          }
+        })
+      } else {
+        this.addJobExecution(job.name, {
+          jobExecutionId: notification.jobId, output: [notification]
+        });
+      }
     });
   }
 }

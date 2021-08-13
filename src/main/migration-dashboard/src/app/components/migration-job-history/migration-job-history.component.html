@@ -4,6 +4,12 @@
   <div *ngIf="jobList.length > 0; else noJobs">
     <ul *ngFor="let job of jobList">
       <li>{{ job.name }}</li>
+      <div
+            class="job--output-container"
+            *ngFor="let notification of job.jobNotifications"
+          >
+            <p>{{ notification }}</p>
+          </div>
       <ul *ngFor="let execution of job.jobExecutions">
         <div class="job-execution-item">
           <h2>{{ execution.jobExecutionId }}</h2>
@@ -18,5 +24,4 @@
     </ul>
   </div>
 </div>
-{{ jobList }}
 <ng-template #noJobs>Aucun job terminés recement.</ng-template>
