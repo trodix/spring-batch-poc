@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MigrationConfigComponent } from './migration-config.component';
+import { MigrationConfigComponent } from './job-todo-config.component';
 
 describe('MigrationConfigComponent', () => {
   let component: MigrationConfigComponent;

@@ -3,6 +3,7 @@ package com.trodix.migration.configuration;
 import com.trodix.migration.models.TodoBackendDto;
 import com.trodix.migration.models.TodoDto;
 import com.trodix.migration.readers.TodoItemRestReader;
+import com.trodix.migration.services.JobService;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -22,6 +23,9 @@ import org.springframework.context.annotation.Configuration;
 public class SpringBatchConfig {
 
     @Autowired
+    private JobService jobService;
+
+    @Autowired
     private JobBuilderFactory jobBuilderFactory;
 
     @Autowired
@@ -38,10 +42,16 @@ public class SpringBatchConfig {
 
     @Bean
     public Job todoJob() {
+        final String jobName = "todos-migration-job";
+        
         Step step = stepBuilderFactory.get("migrate-todo").<TodoDto, TodoBackendDto>chunk(30).reader(todoItemReader)
                 .processor(todoItemProcessor).writer(todoItemWriter).build();
 
-        return jobBuilderFactory.get("todos-migration-job").incrementer(new RunIdIncrementer()).start(step).build();
+        Job todoJob = jobBuilderFactory.get(jobName).incrementer(new RunIdIncrementer()).start(step).build();
+
+        this.jobService.registerJob(jobName);
+
+        return todoJob;
     }
 
     @Bean

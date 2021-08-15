@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { JobNotification } from 'src/models/JobNotification';
-import { JobService, WEBSOCKET_JOB_EXECUTION_BASE_URL } from 'src/services/job.service';
-import { WebsocketService } from 'src/services/websocket.service';
+import { Subject } from 'rxjs';
+import { JobExecution } from 'src/models/batch/JobExecution';
+import { SpringBatchService } from 'src/services/springbatch.service';
 
 @Component({
   selector: 'app-migration-job-history',
@@ -10,28 +10,17 @@ import { WebsocketService } from 'src/services/websocket.service';
 })
 export class MigrationJobHistoryComponent implements OnInit {
 
-  subscribedUrl: string[] = [];
+  public jobExecutions$: Subject<JobExecution[]> = new Subject();
 
-  constructor(private jobService: JobService, private websocketService: WebsocketService) { }
+  constructor(private springBatchService: SpringBatchService) { }
 
   ngOnInit(): void {
-    this.initWebsocket();
+    this.springBatchService.initJobData();
+    this.jobExecutions$ = this.springBatchService.jobExecutions$;
   }
 
-  get jobList() {
-    return this.jobService.getExecutedJobs();
-  }
-
-  private initWebsocket() {
-    this.websocketService.initWebSocket().then(() => {
-      this.websocketService.subscribe(WEBSOCKET_JOB_EXECUTION_BASE_URL, (event) => {
-        this.subscribedUrl.push(WEBSOCKET_JOB_EXECUTION_BASE_URL);
-        const response: JobNotification = event.body;
-        console.log(response);
-        this.jobService.addJob(response);
-        console.log(this.jobService.getExecutedJobs());
-      });
-    });
+  refresh() {
+    this.springBatchService.refresh();
   }
 
 }

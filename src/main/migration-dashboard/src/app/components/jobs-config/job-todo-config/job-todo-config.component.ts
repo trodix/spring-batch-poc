@@ -1,18 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JobApiResponse } from 'src/models/JobApiResponse';
-import { JobExecutionNotification } from 'src/models/JobExecutionNotification';
 import { MigrationConfig } from 'src/models/MigrationConfig';
-import { JobService, WEBSOCKET_JOB_EXECUTION_BASE_URL } from 'src/services/job.service';
-import { WebsocketService } from 'src/services/websocket.service';
+import { SpringBatchService } from 'src/services/springbatch.service';
 
 @Component({
-  selector: 'app-migration-config',
-  templateUrl: './migration-config.component.html',
-  styleUrls: ['./migration-config.component.scss']
+  selector: 'app-job-todo-config',
+  templateUrl: './job-todo-config.component.html',
+  styleUrls: ['./job-todo-config.component.scss']
 })
-export class MigrationConfigComponent implements OnDestroy {
+export class MigrationConfigComponent {
 
   jobExecutions: any[] = [];
   subscribedUrl: string[] = [];
@@ -27,14 +25,7 @@ export class MigrationConfigComponent implements OnDestroy {
     migrationDestinationPassword: [''],
   });
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private jobService: JobService, private websocketService: WebsocketService) {
-  }
-
-
-  ngOnDestroy(): void {
-    this.subscribedUrl.forEach(url => {
-      this.websocketService.unsubscribeToWebSocketEvent(url);
-    })
+  constructor(private fb: FormBuilder, private http: HttpClient, private springBatchService: SpringBatchService) {
   }
 
   runMigration(): void {
@@ -50,7 +41,7 @@ export class MigrationConfigComponent implements OnDestroy {
 
     if (this.configForm.valid) {
       this.http.post<JobApiResponse>('http://localhost:8001/api/migration/run/todo-job', body).subscribe(data => {
-        this.initWebsocket(data.jobName);
+        this.springBatchService.refresh();
       });
     }
   }
@@ -58,17 +49,4 @@ export class MigrationConfigComponent implements OnDestroy {
   resetForm() {
     this.configForm.reset();
   }
-
-  private initWebsocket(jobName: string) {
-    this.websocketService.initWebSocket().then(() => {
-      this.websocketService.subscribe(`${WEBSOCKET_JOB_EXECUTION_BASE_URL}/${jobName}`, (event) => {
-        this.subscribedUrl.push(`${WEBSOCKET_JOB_EXECUTION_BASE_URL}/${jobName}`);
-        const response: JobExecutionNotification = event.body;
-        console.log(response);
-        this.jobService.addJobExecutionOutput(response);
-      });
-    });
-  }
-
-
 }

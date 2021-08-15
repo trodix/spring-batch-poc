@@ -1,27 +1,47 @@
-<div class="job-list">
-  <h2>Liste des derniers jobs terminés</h2>
-  <p>nombre: {{ jobList.length }}</p>
-  <div *ngIf="jobList.length > 0; else noJobs">
-    <ul *ngFor="let job of jobList">
-      <li>{{ job.name }}</li>
-      <div
-            class="job--output-container"
-            *ngFor="let notification of job.jobNotifications"
-          >
-            <p>{{ notification }}</p>
-          </div>
-      <ul *ngFor="let execution of job.jobExecutions">
-        <div class="job-execution-item">
-          <h2>{{ execution.jobExecutionId }}</h2>
-          <div
-            class="job-execution-output-container"
-            *ngFor="let output of execution.output"
-          >
-            <p>{{ output.notification }}</p>
-          </div>
-        </div>
-      </ul>
-    </ul>
+<div class="job-history">
+  <h2>Historique d'exécution</h2>
+  <div class="action-toolbar">
+    <button mat-raised-button color="primary" (click)="refresh()">
+      Rafraîchir
+    </button>
   </div>
+  <div *ngIf="(jobExecutions$ | async) as jobExecutions; else noJobs">
+    <mat-accordion>
+      <div *ngFor="let jobExecution of jobExecutions; let first = first;">
+        <mat-expansion-panel [expanded]="first">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <p><span>{{ jobExecution.jobInstance.jobName | uppercase }}</span> - <span class="{{ jobExecution.exitStatus.exitCode | lowercase }}">{{ jobExecution.exitStatus.exitCode }}</span></p>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="job-execution">
+            <div class="job-execution-infos-container">
+              <div class="job-execution-infos">
+                <p>Nom du job: <span>{{ jobExecution.jobInstance.jobName }}</span></p>
+                <p>Numéro de l'instance du job: <span>{{ jobExecution.jobInstance.instanceId }}</span></p>
+                <p>Crée le <span>{{ jobExecution.createTime | date: 'dd/MM/yyyy' }}</span> à <span>{{ jobExecution.createTime | date: 'HH:mm:ss.SSS' }}</span></p>
+                <p>Terminé le <span>{{ jobExecution.endTime | date: 'dd/MM/yyyy' }}</span> à <span>{{ jobExecution.endTime | date: 'HH:mm:ss.SSS' }}</span></p>
+              </div>
+              <div class="job-execution-params">
+                <div *ngFor="let param of jobExecution.jobParameters.parameters | keyvalue">
+                  <p>{{ param.key }}: <span>{{ $any(param.value).value }}</span></p>
+                </div>
+              </div>
+            </div>
+            <div class="output-container" *ngIf="jobExecution.exitStatus.exitDescription">
+              <p>Message: </p>
+              <div class="output">
+                <code>{{ jobExecution.exitStatus.exitDescription }}</code>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+  </div>
+  <ng-template #noJobs>
+    <p class="mat-subheading-2">Aucun job terminés récement.</p>
+  </ng-template>
 </div>
-<ng-template #noJobs><p class="mat-subheading-2">Aucun job terminés recement.</p></ng-template>
+
+

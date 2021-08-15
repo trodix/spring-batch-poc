@@ -1,0 +1,43 @@
+p > span {
+    font-weight: bold;
+}
+
+.output-container {
+    border: 2px solid #000;
+    padding: 30px;
+    background-color: #fff;
+}
+
+.output {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.failed {
+    color: red;
+}
+
+.completed {
+    color: green;
+}
+
+.action-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 50px 0;
+}
+
+.job-execution {
+    padding: 0 20px 20px 30px;
+    // background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.job-execution-infos-container {
+    display: flex;
+    padding: 20px;
+}
+
+.job-execution-infos-container > div {
+    margin: 0 30px;
+}
