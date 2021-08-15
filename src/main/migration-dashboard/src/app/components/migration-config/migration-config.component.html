@@ -1,54 +1,78 @@
-<div class="form-config">
-    <form [formGroup]="configForm" (ngSubmit)="runMigration()">
-      <label for="migrationSourceUrl">Url serveur source: </label>
-      <input
-        id="migrationSourceUrl"
-        type="url"
-        formControlName="migrationSourceUrl"
-      />
-
-      <label for="migrationSourceTodoPath">Chemin resource api source: </label>
-      <input
-        id="migrationSourceTodoPath"
-        type="text"
-        formControlName="migrationSourceTodoPath"
-      />
-
-      <label for="migrationDestinationUrl">Url serveur destination: </label>
-      <input
-        id="migrationDestinationUrl"
-        type="url"
-        formControlName="migrationDestinationUrl"
-      />
-
-      <label for="migrationDestinationTodoPath">Chemin resource api destination: </label>
-      <input
-        id="migrationDestinationTodoPath"
-        type="text"
-        formControlName="migrationDestinationTodoPath"
-      />
-
-      <label for="migrationDestinationAuthEndpoint">Endpoint auth serveur destination: </label>
-      <input
-        id="migrationDestinationAuthEndpoint"
-        type="text"
-        formControlName="migrationDestinationAuthEndpoint"
-      />
-
-      <label for="migrationDestinationUsername">Username serveur destination: </label>
-      <input
-        id="migrationDestinationUsername"
-        type="text"
-        formControlName="migrationDestinationUsername"
-      />
-
-      <label for="migrationDestinationPassword">Password serveur destination: </label>
-      <input
-        id="migrationDestinationPassword"
-        type="password"
-        formControlName="migrationDestinationPassword"
-      />
-
-      <button type="submit">Lancer la Migration</button>
-    </form>
-  </div>
+<div class="migration-config-container">
+  <h2>Migration Todo</h2>
+  <form [formGroup]="configForm" (ngSubmit)="runMigration()">
+    <div class="form-inputs-container">
+      <mat-form-field>
+        <input
+          id="migrationSourceUrl"
+          type="url"
+          matInput
+          formControlName="migrationSourceUrl"
+          placeholder="Url serveur source"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationSourceTodoPath"
+          type="text"
+          matInput
+          formControlName="migrationSourceTodoPath"
+          placeholder="Chemin resource api source"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationDestinationUrl"
+          type="url"
+          matInput
+          formControlName="migrationDestinationUrl"
+          placeholder="Url serveur destination"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationDestinationTodoPath"
+          type="text"
+          matInput
+          formControlName="migrationDestinationTodoPath"
+          placeholder="Chemin resource api destination"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationDestinationAuthEndpoint"
+          type="text"
+          matInput
+          formControlName="migrationDestinationAuthEndpoint"
+          placeholder="Endpoint auth serveur destination"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationDestinationUsername"
+          type="text"
+          matInput
+          formControlName="migrationDestinationUsername"
+          placeholder="Username serveur destination"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          id="migrationDestinationPassword"
+          type="password"
+          matInput
+          formControlName="migrationDestinationPassword"
+          placeholder="Password serveur destination"
+        />
+      </mat-form-field>
+    </div>
+    <div class="buttons-row">
+      <button mat-raised-button (click)="resetForm()">
+        Réinitialiser
+      </button>
+      <button mat-raised-button color="primary" type="submit">
+        Lancer la Migration
+      </button>
+    </div>
+  </form>
+</div>

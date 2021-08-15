@@ -1,6 +1,9 @@
-<h1>{{ title }}</h1>
+<mat-toolbar color="primary">
+  <img class="logo" src="assets/logo.png" alt="logo">
+  <span>{{ title }}</span>
+</mat-toolbar>
 
-<main>
+<main id="app-container">
   <app-migration-config></app-migration-config>
   <app-migration-job-history></app-migration-job-history>
 </main>

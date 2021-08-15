@@ -53,7 +53,10 @@ export class MigrationConfigComponent implements OnDestroy {
         this.initWebsocket(data.jobName);
       });
     }
+  }
 
+  resetForm() {
+    this.configForm.reset();
   }
 
   private initWebsocket(jobName: string) {

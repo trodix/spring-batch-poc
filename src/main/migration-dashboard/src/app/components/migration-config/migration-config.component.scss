@@ -1,5 +1,14 @@
-.form-config > form > input {
+.migration-config-container .form-inputs-container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0;
+}
+
+.buttons-row > button {
+ margin-left: 15px;
 }
