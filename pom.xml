@@ -79,6 +79,15 @@
 			<artifactId>spring-batch-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -132,7 +141,7 @@
 						</goals>
 						<configuration>
 							<workingDirectory>src/main/migration-dashboard</workingDirectory>
-							<executable>ng</executable>
+							<executable>src/main/migration-dashboard/node_modules/.bin/ng</executable>
 							<arguments>build</arguments>
 						</configuration>
 					</execution>
