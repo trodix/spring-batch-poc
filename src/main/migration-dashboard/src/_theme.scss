@@ -1,0 +1,23 @@
+.notification {
+  color: #ffffff;
+}
+
+.notification.success {
+  background-color: mat.get-color-from-palette($migration-dashboard-success);
+}
+
+.notification.error {
+  background-color: mat.get-color-from-palette($migration-dashboard-error);
+}
+
+.notification.warn {
+  background-color: mat.get-color-from-palette($migration-dashboard-warn);
+}
+
+.mat-warn * {
+  color: #fff;
+}
+
+input.ng-invalid {
+    background-color: #f58f8f
+}

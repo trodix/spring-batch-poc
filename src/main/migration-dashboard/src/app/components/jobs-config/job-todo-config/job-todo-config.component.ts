@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { JobApiResponse } from 'src/models/JobApiResponse';
 import { MigrationConfig } from 'src/models/MigrationConfig';
+import { NotificationService } from 'src/services/notification.service';
 import { SpringBatchService } from 'src/services/springbatch.service';
 
 @Component({
@@ -10,7 +13,7 @@ import { SpringBatchService } from 'src/services/springbatch.service';
   templateUrl: './job-todo-config.component.html',
   styleUrls: ['./job-todo-config.component.scss']
 })
-export class MigrationConfigComponent {
+export class TodoJobConfigComponent {
 
   jobExecutions: any[] = [];
   subscribedUrl: string[] = [];
@@ -25,7 +28,7 @@ export class MigrationConfigComponent {
     migrationDestinationPassword: [''],
   });
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private springBatchService: SpringBatchService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private springBatchService: SpringBatchService, private router: Router, private notificationService: NotificationService) {
   }
 
   runMigration(): void {
@@ -42,6 +45,8 @@ export class MigrationConfigComponent {
     if (this.configForm.valid) {
       this.http.post<JobApiResponse>('http://localhost:8001/api/migration/run/todo-job', body).subscribe(data => {
         this.springBatchService.refresh();
+        this.router.navigateByUrl("/history");
+        this.notificationService.success("Job todo-job executé avec succès");
       });
     }
   }

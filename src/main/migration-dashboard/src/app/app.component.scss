@@ -1,5 +1,15 @@
+@import '~@angular/material/theming';
+
 #app-container {
     margin: 20px;
+}
+
+.mat-sidenav {
+    min-width: 240px;
+}
+
+.mat-sidenav-content {
+    height: calc(100vh - 64px);
 }
 
 .logo {
@@ -7,4 +17,11 @@
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 20px;
+}
+
+.mat-list-item {
+    border-bottom: 1px solid #dedede;
+    &:hover {
+        color: orange;
+    }
 }

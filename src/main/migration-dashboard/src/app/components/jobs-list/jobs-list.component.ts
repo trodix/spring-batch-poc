@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JobsListComponent implements OnInit {
 
+  dataSource: any[] = [
+    { title: "Todo migration", actions: [
+      { icon: "visibility", url: "/job/todo-job" }
+    ] }
+  ]
+
+  displayedColumns: string[] = ['title', 'actions'];
+
   constructor() { }
 
   ngOnInit(): void {

@@ -1,17 +1,20 @@
 <div class="job-history">
   <h2>Historique d'exécution</h2>
   <div class="action-toolbar">
-    <button mat-raised-button color="primary" (click)="refresh()">
-      Rafraîchir
+    <button mat-raised-button color="warn" (click)="refresh()">
+      <mat-icon>refresh</mat-icon> Rafraîchir
     </button>
   </div>
   <div *ngIf="(jobExecutions$ | async) as jobExecutions; else noJobs">
     <mat-accordion>
       <div *ngFor="let jobExecution of jobExecutions; let first = first;">
-        <mat-expansion-panel [expanded]="first">
+        <mat-expansion-panel [expanded]="first" class="mat-elevation-z0">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <p><span>{{ jobExecution.jobInstance.jobName | uppercase }}</span> - <span class="{{ jobExecution.exitStatus.exitCode | lowercase }}">{{ jobExecution.exitStatus.exitCode }}</span></p>
+              <p class="title">
+                <span>{{ jobExecution.jobInstance.jobName | uppercase }}</span> - 
+                <span class="{{ jobExecution.exitStatus.exitCode | lowercase }}">{{ jobExecution.exitStatus.exitCode }}</span>
+              </p>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="job-execution">

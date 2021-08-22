@@ -142,7 +142,9 @@
 						<configuration>
 							<workingDirectory>src/main/migration-dashboard</workingDirectory>
 							<executable>src/main/migration-dashboard/node_modules/.bin/ng</executable>
-							<arguments>build</arguments>
+							<arguments>
+								<argument>build</argument>
+							</arguments>
 						</configuration>
 					</execution>
 				</executions>

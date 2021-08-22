@@ -1,12 +1,24 @@
-<div class="jobs-list">
-  <mat-tab-group animationDuration="0ms">
-    <mat-tab label="Todo Job">
-      <app-job-todo-config></app-job-todo-config>
-    </mat-tab>
-    <mat-tab label="XXX Job">
-      <h3>Some Job config</h3>
-    </mat-tab>
-  </mat-tab-group>
+<h2>Liste des Jobs disponibles</h2>
+<table mat-table [dataSource]="dataSource" class="table-jobs">
 
-  <app-migration-job-history></app-migration-job-history>
-</div>
+  <!-- Name Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Titre</th>
+    <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let element">
+        <span *ngFor="let item of element.actions">
+          <button mat-button routerLink="{{item.url}}">
+            <mat-icon class="action-icon" >{{ item.icon }}</mat-icon>
+          </button>
+        </span>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

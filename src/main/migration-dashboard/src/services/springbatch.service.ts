@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { map, mergeMap } from 'rxjs/operators';
 import { JobExecution } from "src/models/batch/JobExecution";
 import { JobExecutionApiResponse } from "src/models/batch/JobExecutionApiResponse";
 import { JobInstance } from "src/models/batch/JobInstance";
+import { environment } from '../environments/environment';
 
-export const BACKEND_URL = 'http://localhost:8001';
+export const BACKEND_URL = environment.BACKEND_URL;
 export const MIGRATION_JOB_API_URL = 'api/migration/jobs';
 
 @Injectable({

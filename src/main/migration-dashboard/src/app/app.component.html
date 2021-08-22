@@ -1,8 +1,26 @@
 <mat-toolbar color="primary">
-  <img class="logo" src="assets/logo.png" alt="logo">
+  <img class="logo" src="assets/logo.png" alt="logo" />
   <span>{{ title }}</span>
 </mat-toolbar>
 
-<main id="app-container">
-  <app-jobs-list></app-jobs-list>
-</main>
+<div class="content-container">
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <mat-list-item routerLink="/jobs-list">
+          <mat-icon mat-list-icon>play_circle</mat-icon>
+          <span>Jobs</span>
+        </mat-list-item>
+        <mat-list-item routerLink="/history">
+          <mat-icon mat-list-icon>checklist</mat-icon>
+          <span>Historique</span>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main id="app-container">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
