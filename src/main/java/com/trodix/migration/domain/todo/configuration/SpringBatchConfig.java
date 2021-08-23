@@ -47,7 +47,7 @@ public class SpringBatchConfig {
     public Job todoJob() {
         final String jobName = "todos-migration-job";
 
-        Step step1 = stepBuilderFactory.get("get-todo-items").<TodoDto, TodoBackendDto>chunk(30)
+        Step step1 = stepBuilderFactory.get("get-todo-items").<TodoDto, TodoBackendDto>chunk(200)
                 .reader(todoItemReader())
                 .processor(todoItemProcessor)
                 .writer(todoItemWriter)
