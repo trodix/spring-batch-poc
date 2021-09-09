@@ -10,8 +10,8 @@
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
-            <!-- <PatternLayout pattern="${LOG_PATTERN}" /> -->
-            <PatternLayout pattern="${LOG_DATEFORMAT_PATTERN}" />
+            <!-- <PatternLayout pattern="${LOG_PATTERN}" disableAnsi="false" /> -->
+            <PatternLayout pattern="${LOG_DATEFORMAT_PATTERN}" disableAnsi="false" />
         </Console>
         <!-- Rolling File Appender -->
         <RollingFile name="FileAppender" fileName="logs/migration.log" filePattern="logs/migration-%d{yyyy-MM-dd}-%i.log">
